@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
-import { mockBooks } from './Books';
+import { mockBooks } from './books';
 
 export function BookDetails() {
   // CONCEITO IMPORTANTE: useParams captura o parâmetro dinâmico da URL (/livros/:id)
