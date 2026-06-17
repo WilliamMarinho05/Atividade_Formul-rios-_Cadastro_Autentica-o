@@ -3,12 +3,12 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import { ThemeProvider, ThemeContext } from './contexts/ThemeContext'; // Importa o tema
 
-import { Home } from './pages/Home';
-import { Books } from './pages/Books';
-import { BookDetails } from './pages/BookDetails';
-import { Favorites } from './pages/Favorites';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
+import { Home } from './pages/home';
+import { Books } from './pages/books';
+import { BookDetails } from './pages/bookDetails';
+import { Favorites } from './pages/favorites';
+import { Login } from './pages/login';
+import { Register } from './pages/register';
 
 import './App.css';
 
