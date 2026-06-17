@@ -24,7 +24,7 @@ export function Login() {
     try {
       const response = await axios.post('http://localhost:3000/login', data);
       
-      // Salva os dados do usuário vindos do banco no estado global
+      // Salva os dados do usuário vindos do banco no estado global (useContext)
       login(response.data.user); 
       
       reset(); // Limpa os campos por segurança
@@ -36,22 +36,55 @@ export function Login() {
 
   return (
     <div className="container">
-      <h2>Entrar no Sistema</h2>
+      {/* Detalhe Minimalista: Título alinhado com a proposta visual */}
+      <h2>Acessar Conta 🔑</h2>
+      <p style={{ fontSize: '0.9rem', opacity: 0.7, marginBottom: '20px' }}>
+        Seja bem-vindo de volta! Insira suas credenciais.
+      </p>
       
-      {/* Mensagem de erro direto na tela */}
-      {errorMsg && <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMsg}</p>}
+      {/* COLA: Caixa de erro dinâmica e estilizada integrada com o efeito de vidro */}
+      {errorMsg && (
+        <div style={{
+          padding: '12px',
+          borderRadius: '12px',
+          marginBottom: '20px',
+          fontSize: '0.95rem',
+          fontWeight: '500',
+          background: 'rgba(239, 68, 68, 0.15)',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          color: '#f87171',
+          animation: 'floatIn 0.3s ease'
+        }}>
+          ❌ {errorMsg}
+        </div>
+      )}
       
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="email" {...register('email')} placeholder="Digite seu e-mail" />
-        <p style={{ color: 'red' }}>{errors.email?.message}</p>
+        <div>
+          <input type="email" {...register('email')} placeholder="Seu e-mail cadastrado" />
+          {errors.email && (
+            <p style={{ color: '#f87171', fontSize: '0.8rem', textAlign: 'left', marginLeft: '5px', marginTop: '4px' }}>
+              ⚠️ {errors.email.message}
+            </p>
+          )}
+        </div>
         
-        <input type="password" {...register('password')} placeholder="Sua senha" />
-        <p style={{ color: 'red' }}>{errors.password?.message}</p>
+        <div>
+          <input type="password" {...register('password')} placeholder="Sua senha" />
+          {errors.password && (
+            <p style={{ color: '#f87171', fontSize: '0.8rem', textAlign: 'left', marginLeft: '5px', marginTop: '4px' }}>
+              ⚠️ {errors.password.message}
+            </p>
+          )}
+        </div>
         
-        <button type="submit">Logar</button>
+        <button type="submit">Entrar</button>
       </form>
+      
       <br />
-      <Link to="/cadastro">Não tem conta? Cadastre-se</Link>
+      <Link to="/cadastro" style={{ fontSize: '0.9rem', fontWeight: '500' }}>
+        Não tem uma conta? <span style={{ textDecoration: 'underline' }}>Cadastre-se</span>
+      </Link>
     </div>
   );
 }

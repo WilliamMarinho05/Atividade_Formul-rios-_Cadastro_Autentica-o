@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
 
-// COLA: Validação com Zod (Garante e-mail válido e senhas iguais)
+// COLA: Validação com Zod intacta
 const registerSchema = z.object({
   name: z.string().min(1, 'O nome é obrigatório.'),
   email: z.string().email('E-mail inválido.'),
@@ -13,36 +13,31 @@ const registerSchema = z.object({
   confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "As senhas não coincidem.",
-  path: ["confirmPassword"], // Atribui o erro ao campo de confirmação
+  path: ["confirmPassword"],
 });
 
 export function Register() {
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // COLA: useForm com o 'reset' para limpar os campos
+  // COLA: useForm com o 'reset'
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(registerSchema)
   });
 
   const onSubmit = async (data) => {
     try {
-      // Envia os dados reais para o Backend
       const response = await axios.post('http://localhost:3000/register', {
         name: data.name,
         email: data.email,
         password: data.password
       });
 
-      // Se deu certo: define a mensagem na tela e o status positivo
-      setMessage(response.data.message || 'Usuário cadastrado!');
+      setMessage(response.data.message || 'Usuário cadastrado com sucesso!');
       setIsSuccess(true);
-      
-      // CONCEITO EXIGIDO: Limpa todos os inputs automaticamente
       reset(); 
 
     } catch (error) {
-      // Se deu erro (ex: e-mail duplicado): mostra o erro em vermelho
       setIsSuccess(false);
       setMessage(error.response?.data?.error || 'Erro ao realizar cadastro.');
     }
@@ -50,32 +45,73 @@ export function Register() {
 
   return (
     <div className="container">
-      <h2>Cadastrar Novo Usuário</h2>
+      {/* Detalhe Minimalista: Ícone junto ao título */}
+      <h2>Criar Conta 👤</h2>
+      <p style={{ fontSize: '0.9rem', opacity: 0.7, marginBottom: '20px' }}>
+        Preencha os dados abaixo para começar.
+      </p>
 
-      {/* COLA: Renderização condicional da mensagem na tela */}
+      {/* COLA: Caixa de mensagem estilizada em formato de "pill" ou card minimalista */}
       {message && (
-        <p style={{ color: isSuccess ? 'green' : 'red', fontWeight: 'bold' }}>
-          {message}
-        </p>
+        <div style={{
+          padding: '12px',
+          borderRadius: '12px',
+          marginBottom: '20px',
+          fontSize: '0.95rem',
+          fontWeight: '500',
+          background: isSuccess ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+          border: isSuccess ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)',
+          color: isSuccess ? '#4ade80' : '#f87171',
+          animation: 'floatIn 0.3s ease'
+        }}>
+          {isSuccess ? '✅ ' : '❌ '} {message}
+        </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" {...register('name')} placeholder="Nome" />
-        <p style={{ color: 'red' }}>{errors.name?.message}</p>
+        <div>
+          <input type="text" {...register('name')} placeholder="Nome completo" />
+          {errors.name && (
+            <p style={{ color: '#f87171', fontSize: '0.8rem', textAlign: 'left', marginLeft: '5px', marginTop: '4px' }}>
+              ⚠️ {errors.name.message}
+            </p>
+          )}
+        </div>
 
-        <input type="email" {...register('email')} placeholder="E-mail" />
-        <p style={{ color: 'red' }}>{errors.email?.message}</p>
+        <div>
+          <input type="email" {...register('email')} placeholder="E-mail válido" />
+          {errors.email && (
+            <p style={{ color: '#f87171', fontSize: '0.8rem', textAlign: 'left', marginLeft: '5px', marginTop: '4px' }}>
+              ⚠️ {errors.email.message}
+            </p>
+          )}
+        </div>
 
-        <input type="password" {...register('password')} placeholder="Senha" />
-        <p style={{ color: 'red' }}>{errors.password?.message}</p>
+        <div>
+          <input type="password" {...register('password')} placeholder="Senha (mín. 4 caracteres)" />
+          {errors.password && (
+            <p style={{ color: '#f87171', fontSize: '0.8rem', textAlign: 'left', marginLeft: '5px', marginTop: '4px' }}>
+              ⚠️ {errors.password.message}
+            </p>
+          )}
+        </div>
 
-        <input type="password" {...register('confirmPassword')} placeholder="Confirme a Senha" />
-        <p style={{ color: 'red' }}>{errors.confirmPassword?.message}</p>
+        <div>
+          <input type="password" {...register('confirmPassword')} placeholder="Confirme sua senha" />
+          {errors.confirmPassword && (
+            <p style={{ color: '#f87171', fontSize: '0.8rem', textAlign: 'left', marginLeft: '5px', marginTop: '4px' }}>
+              ⚠️ {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
 
         <button type="submit">Cadastrar</button>
       </form>
+      
       <br />
-      <Link to="/login">Já tem conta? Faça login</Link>
+      <Link to="/login" style={{ fontSize: '0.9rem', fontWeight: '500' }}>
+        Já tem uma conta? <span style={{ textDecoration: 'underline' }}>Faça login</span>
+      </Link>
     </div>
   );
 }
