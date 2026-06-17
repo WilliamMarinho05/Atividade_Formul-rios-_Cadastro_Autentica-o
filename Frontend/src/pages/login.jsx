@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido.'),
@@ -23,7 +24,7 @@ export function Login() {
   const onSubmit = async (data) => {
     try {
       //const response = await axios.post('http://localhost:3000/login', data); //Sem vercel
-      const response = await axios.post('/api/login', data);
+      const response = await axios.post(`${API_URL}/login`, data)
       
       // Salva os dados do usuário vindos do banco no estado global (useContext)
       login(response.data.user); 

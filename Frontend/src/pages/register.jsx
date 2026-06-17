@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 // COLA: Validação com Zod intacta
 const registerSchema = z.object({
@@ -25,10 +26,10 @@ export function Register() {
     resolver: zodResolver(registerSchema)
   });
 
+  /*
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('/api/register', {
-      //const response = await axios.post('http://localhost:3000/register', { //Sem vercel
+      const response = await axios.post('http://localhost:3000/register', { //Sem vercel
         name: data.name,
         email: data.email,
         password: data.password
@@ -43,6 +44,25 @@ export function Register() {
       setMessage(error.response?.data?.error || 'Erro ao realizar cadastro.');
     }
   };
+  */
+ 
+  const onSubmit = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/register`, {
+      name: data.name,
+      email: data.email,
+      password: data.password
+    });
+
+    setMessage(response.data.message || 'Usuário cadastrado com sucesso!');
+    setIsSuccess(true);
+    reset();
+
+  } catch (error) {
+    setIsSuccess(false);
+    setMessage(error.response?.data?.error || 'Erro ao realizar cadastro.');
+  }
+};
 
   return (
     <div className="container">
