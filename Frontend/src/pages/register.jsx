@@ -27,7 +27,8 @@ export function Register() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://localhost:3000/register', {
+      const response = await axios.post('/api/register', {
+      //const response = await axios.post('http://localhost:3000/register', { //Sem vercel
         name: data.name,
         email: data.email,
         password: data.password

@@ -22,7 +22,8 @@ export function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://localhost:3000/login', data);
+      //const response = await axios.post('http://localhost:3000/login', data); //Sem vercel
+      const response = await axios.post('/api/login', data);
       
       // Salva os dados do usuário vindos do banco no estado global (useContext)
       login(response.data.user); 
