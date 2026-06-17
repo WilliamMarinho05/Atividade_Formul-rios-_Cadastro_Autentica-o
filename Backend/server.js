@@ -13,7 +13,13 @@ app.use(express.json());
 // Se você usar '/api', a rota mudaria para: http://localhost:3000/api/login
 app.use('/', apiRoutes);
 
-// Inicialização do Servidor
-app.listen(3000, () => {
-    console.log('Servidor Backend rodando na porta 3000');
+// Inicialização do Servidor sem deploy
+//app.listen(3000, () => {
+//    console.log('Servidor Backend rodando na porta 3000');
+//});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
