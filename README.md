@@ -1,32 +1,35 @@
 # 📚 Plataforma de Biblioteca Digital: Autenticação, Contextos e Paginação
 
-Este repositório contém a documentação e o código-fonte de uma aplicação fullstack voltada para o gerenciamento de acervos literários e autenticação de usuários. O ecossistema integra uma interface modular em **React (Vite)** com uma API desenvolvida em **Node.js (Express)** e persistência em banco de dados relacional **SQLite**.
-
+Este repositório contém a documentação e o código-fonte de uma aplicação fullstack voltada para o gerenciamento
 ---
 
 ## 🔗 Link para Acesso (Deploy)
 
 A interface do usuário foi implantada em ambiente de produção e pode ser acessada através do link abaixo:
 
-👉 **[CLIQUE AQUI PARA ACESSAR A APLICAÇÃO NO VERCEL]([https://SEU-LINK-DO-VERCEL-AQUI.vercel.app](https://atividade-formul-rios-cadastro-aute-gray.vercel.app))**
+👉 **[CLIQUE AQUI PARA ACESSAR A APLICAÇÃO NO VERCEL](https://atividade-formul-rios-cadastro-aute-gray.vercel.app)**
+
+---
 
 ---
 
 ## 🗂️ Estrutura de Diretórios
 
-O projeto segue uma arquitetura desacoplada, separando as responsabilidades de cliente e servidor em diretórios distintamente organizados:
+O projeto segue uma arquitetura desacoplada:
 
 ```text
-/AtividadeAula12 (Raiz do Projeto)
+/AtividadeAula12
 ├── README.md
 ├── Backend
 │   ├── database.sqlite
 │   ├── package.json
-│   └── server.js
+│   ├── server.js
+│   └── db.js
 └── Frontend
     ├── package.json
     ├── vite.config.js
     ├── index.html
+    ├── vercel.json
     └── src
         ├── App.css
         ├── App.jsx
@@ -42,7 +45,6 @@ O projeto segue uma arquitetura desacoplada, separando as responsabilidades de c
             ├── Login.jsx
             └── Register.jsx
 ```
-
 ---
 
 # 🛠️ Engenharia do Projeto: Inicialização e Dependências
@@ -53,7 +55,7 @@ Para fins de auditoria ou reconstrução do ambiente de desenvolvimento do zero,
 
 ## 1️⃣ Camada de Servidor e Banco de Dados (`/Backend`)
 
-Responsável pelo fornecimento dos endpoints REST, processamento das regras de negócio de autenticação e persistência dos dados.
+- **Backend (Node.js + Express + SQLite + Render):** Responsável pelos endpoints REST, autenticação e persistência dos dados.
 
 ### Acessar o diretório
 
@@ -70,7 +72,7 @@ npm init -y
 ### Instalar dependências
 
 ```bash
-npm install express cors sqlite3
+npm install express cors better-sqlite3
 ```
 
 ### Dependências utilizadas
@@ -78,14 +80,21 @@ npm install express cors sqlite3
 | Pacote  | Função                                                                                |
 | ------- | ------------------------------------------------------------------------------------- |
 | express | Framework HTTP responsável pelo gerenciamento das rotas `/register` e `/login`.       |
-| cors    | Middleware de segurança para permitir requisições entre diferentes origens.           |
-| sqlite3 | Banco de dados relacional leve que armazena os dados localmente em `database.sqlite`. |
+| cors    | Middleware de segurança para permitir requisições entre frontend e backend.           |
+| better-sqlite3 | Banco de dados relacional leve . |
+
+### Deploy Backend
+
+- Hospedado no Render
+- Responsável por toda a lógica de autenticação e dados
+- Banco SQLite permanece local no servidor
+
 
 ---
 
 ## 2️⃣ Camada de Interface do Usuário (`/Frontend`)
 
-Interface cliente baseada em componentes React e renderização dinâmica controlada por estados.
+Interface cliente baseada em componentes React e renderização dinâmica controlada por estados. Está hospedado no Vercel e configurado como SPA.
 
 ### Acessar o diretório
 
@@ -156,12 +165,12 @@ Responsável por:
 
 A paginação foi implementada inteiramente no frontend para proporcionar navegação fluida.
 
-### Página Home (`Home.jsx`)
+### Página Home (`home.jsx`)
 
 * Exibição paginada dos lançamentos;
 * Controle dinâmico através de fatiamento de arrays.
 
-### Página Books (`Books.jsx`)
+### Página Books (`books.jsx`)
 
 Implementação baseada em:
 
@@ -259,3 +268,20 @@ npm run dev
 * CORS
 
 ---
+
+# ▶️ Como rodar o projeto completo
+
+## Backend
+```bash
+cd Backend
+node server.js
+```
+
+
+## Frontend
+```bash
+cd Frontend
+npm run dev
+```
+
+- E acesse **http://localhost:5173/**
